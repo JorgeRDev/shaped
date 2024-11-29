@@ -4,9 +4,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -28,45 +25,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// requirements.js
-var require_requirements = __commonJS({
-  "requirements.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.optionalDependencies = exports2.engines = exports2.config = void 0;
-    var config2 = {
-      libvips: ">=8.15.3"
-    };
-    exports2.config = config2;
-    var engines2 = {
-      node: "^18.17.0 || ^20.3.0 || >=21.0.0"
-    };
-    exports2.engines = engines2;
-    var optionalDependencies2 = {
-      "@img/sharp-darwin-arm64": "0.33.5",
-      "@img/sharp-darwin-x64": "0.33.5",
-      "@img/sharp-libvips-darwin-arm64": "1.0.4",
-      "@img/sharp-libvips-darwin-x64": "1.0.4",
-      "@img/sharp-libvips-linux-arm": "1.0.5",
-      "@img/sharp-libvips-linux-arm64": "1.0.4",
-      "@img/sharp-libvips-linux-s390x": "1.0.4",
-      "@img/sharp-libvips-linux-x64": "1.0.4",
-      "@img/sharp-libvips-linuxmusl-arm64": "1.0.4",
-      "@img/sharp-libvips-linuxmusl-x64": "1.0.4",
-      "@img/sharp-linux-arm": "0.33.5",
-      "@img/sharp-linux-arm64": "0.33.5",
-      "@img/sharp-linux-s390x": "0.33.5",
-      "@img/sharp-linux-x64": "0.33.5",
-      "@img/sharp-linuxmusl-arm64": "0.33.5",
-      "@img/sharp-linuxmusl-x64": "0.33.5",
-      "@img/sharp-wasm32": "0.33.5",
-      "@img/sharp-win32-ia32": "0.33.5",
-      "@img/sharp-win32-x64": "0.33.5"
-    };
-    exports2.optionalDependencies = optionalDependencies2;
-  }
-});
 
 // lib/libvips.ts
 var libvips_exports = {};
@@ -93,8 +51,38 @@ var import_gte = __toESM(require("semver/functions/gte"));
 var import_coerce = __toESM(require("semver/functions/coerce"));
 var import_satisfies = __toESM(require("semver/functions/satisfies"));
 var import_detect_libc = __toESM(require("detect-libc"));
-var import_requirements = __toESM(require_requirements());
-var minimumLibvipsVersionLabelled = process.env.npm_package_config_libvips || import_requirements.config.libvips;
+
+// requirements.ts
+var config = {
+  libvips: ">=8.15.3"
+};
+var engines = {
+  node: "^18.17.0 || ^20.3.0 || >=21.0.0"
+};
+var optionalDependencies = {
+  "@img/sharp-darwin-arm64": "0.33.5",
+  "@img/sharp-darwin-x64": "0.33.5",
+  "@img/sharp-libvips-darwin-arm64": "1.0.4",
+  "@img/sharp-libvips-darwin-x64": "1.0.4",
+  "@img/sharp-libvips-linux-arm": "1.0.5",
+  "@img/sharp-libvips-linux-arm64": "1.0.4",
+  "@img/sharp-libvips-linux-s390x": "1.0.4",
+  "@img/sharp-libvips-linux-x64": "1.0.4",
+  "@img/sharp-libvips-linuxmusl-arm64": "1.0.4",
+  "@img/sharp-libvips-linuxmusl-x64": "1.0.4",
+  "@img/sharp-linux-arm": "0.33.5",
+  "@img/sharp-linux-arm64": "0.33.5",
+  "@img/sharp-linux-s390x": "0.33.5",
+  "@img/sharp-linux-x64": "0.33.5",
+  "@img/sharp-linuxmusl-arm64": "0.33.5",
+  "@img/sharp-linuxmusl-x64": "0.33.5",
+  "@img/sharp-wasm32": "0.33.5",
+  "@img/sharp-win32-ia32": "0.33.5",
+  "@img/sharp-win32-x64": "0.33.5"
+};
+
+// lib/libvips.ts
+var minimumLibvipsVersionLabelled = process.env.npm_package_config_libvips || config.libvips;
 var _a;
 var minimumLibvipsVersion = (_a = (0, import_coerce.default)(
   minimumLibvipsVersionLabelled
@@ -164,7 +152,7 @@ var buildSharpLibvipsLibDir = async () => {
 var isUnsupportedNodeRuntime = () => {
   var _a2;
   if (((_a2 = process.release) == null ? void 0 : _a2.name) === "node" && process.versions) {
-    if (!(0, import_satisfies.default)(process.versions.node, import_requirements.engines.node)) {
+    if (!(0, import_satisfies.default)(process.versions.node, engines.node)) {
       return true;
     }
   }
@@ -188,7 +176,7 @@ var yarnLocator = () => {
   try {
     const identHash = sha512(`imgsharp-libvips-${buildPlatformArch()}`);
     const npmVersion = (0, import_coerce.default)(
-      import_requirements.optionalDependencies[`@img/sharp-libvips-${buildPlatformArch()}`]
+      optionalDependencies[`@img/sharp-libvips-${buildPlatformArch()}`]
     ).version;
     return sha512(`${identHash}npm:${npmVersion}`).slice(0, 10);
   } catch {
